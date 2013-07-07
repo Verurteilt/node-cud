@@ -1,0 +1,31 @@
+{%extends 'bases/base.html'%}
+{%block js%}
+	<script>
+	$(document).ready(function(){
+		socket.on('append-tweet', function(data){
+			eval("var datas="+ data);
+			var tweet = "<div class='span4'> <a href='/profile/"+ datas.email + "'><p>Author: "+ datas.user + "</p></a><span class='label label-info'>Tweet: " +datas.message + "</span></div>"
+			$('#tweets').append(tweet);
+		});
+	});
+	</script>
+{%endblock%}
+{%block content%}
+<div class="container">
+      <div class="hero-unit">
+        <h1>Hello, world!</h1>
+        <p>This is a simple app that shows how to use node.js with Django and it's Custum users!</p>
+      </div>
+
+	<h3>Last twenty  tweets tweeted.</h3>
+	<div id="tweets">
+		{%for tweet in tweets%}
+			<div class="span4">
+				<a href="/profile/{{tweet.user.email}}"><p>Author: {{tweet.user.first_name}} {{tweet.user.last_name}}</p></a><span class="label label-info">Tweet: {{tweet.message}}</span>
+			</div>
+		{%empty%}
+			<h4>There are no tweets :C</h4>
+		{%endfor%}
+	</div>
+</div>
+{%endblock%}

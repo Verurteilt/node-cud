@@ -1,0 +1,34 @@
+{%extends 'bases/base.html'%}
+{%block js%}
+	<script>
+	$(document).ready(function(){
+		$('.form-inline').bind('submit',function(e){
+			e.preventDefault();
+			var datos = {}
+			datos.tweet = this.tweet.value;
+			datos.author = "{{user.email}}";
+			socket.emit('nuevo-tweet', datos);
+		});
+		socket.on('append-tweet', function(data){
+			eval("var datas="+ data);
+			$('.msg').html(datas.mes);
+
+		});
+	});
+	</script>
+{%endblock%}
+{%block content%}
+<div class="container">
+	<div class="hero-unit">
+		<form method ="POST" class="form-inline">{%csrf_token%}
+	    	{{form.as_p}}
+	    	<input type="submit" value="Tweet!" class="btn btn-primary" id="new_tweet">
+    	</form>
+	</div>
+{%autoescape off%}
+	<div class="msg">
+		
+	</div>
+{%endautoescape%}
+</div>
+{%endblock%}

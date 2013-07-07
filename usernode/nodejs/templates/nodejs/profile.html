@@ -1,0 +1,26 @@
+{%extends 'bases/base.html'%}
+{%block content%}
+<div class="container">
+	<div class="hero-unit">
+		<h2>{{usuario.first_name}} {{usuario.last_name}}</h2>
+		<img src="/media/{{usuario.profile_picture}}" class="img-polaroid">
+		<br/>
+		<br/>
+		<a href="mailto:{{user.email}}"><span class="label label-info">Email: {{user.email}}</span></a>
+		<a href=""><span class="label label-info">Twitter: {{user.twitter}}</span></a>
+		{% if user == usuario%}
+			<a href="/edit/profile/{{user.email}}"><button class="btn btn-primary">Edit Profile</button></a>
+		{%endif%}
+		<a href="/tweet"><button class="btn btn-primary">Tweet!</button></a>	
+		<h3>Last Five Tweets:</h3>
+		{%for tweet in tweets%}
+			<span class="label label-info">{{tweet}}</span><br>
+		{%endfor%}
+	</div>
+
+</div>
+{%autoescape off%}
+	{{mensaje}}
+{%endautoescape%}
+</div>
+{%endblock%}
