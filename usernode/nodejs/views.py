@@ -15,6 +15,8 @@ from .models import Tweet
 
 def index(request):
     tweets = Tweet.objects.all().order_by('-id')[:20]
+    print request.META['HTTP_USER_AGENT']
+    print dir(request.META['HTTP_USER_AGENT'])
     return render(request, 'nodejs/home.html', locals())
 
 

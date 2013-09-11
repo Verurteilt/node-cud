@@ -18,6 +18,7 @@ io.sockets.on('connection', function(socket){
 		var request = http.request(opt, function(res){
 			res.setEncoding('utf8');
 			res.on('data', function(data){
+				console.log("DATA de regreso", data);
 				io.sockets.emit('append-tweet', data);
 			});
 		});

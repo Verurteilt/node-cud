@@ -33,7 +33,7 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField()
+    password = ReadOnlyPasswordHashField(help_text="Passwords are not stored in plain text if you want to change the password go to <a href='password/'>Change password</a>")
 
     class Meta:
         model = NodeUser

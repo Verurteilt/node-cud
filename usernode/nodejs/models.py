@@ -1,11 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, _user_has_perm
+from django.contrib.auth.models import AbstractBaseUser, _user_has_perm, PermissionsMixin, _user_has_module_perms
 ######################################
 
 from .managers import NodeUserManager
 
 
-class NodeUser(AbstractBaseUser):
+class NodeUser(AbstractBaseUser, PermissionsMixin):
 
     def image(self, filename):
         upload_to = "ProfilePictures/%s/%s" % (self.first_name, filename)
@@ -22,7 +22,7 @@ class NodeUser(AbstractBaseUser):
     access_token_secret = models.CharField(max_length=100, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    # is_superuser = models.BooleanField(default=False)
     profile_picture = models.ImageField(upload_to=image, null=True)
 
     objects = NodeUserManager()
@@ -45,7 +45,10 @@ class NodeUser(AbstractBaseUser):
         return _user_has_perm(self, perm, obj=obj)
 
     def has_module_perms(self, app_label):
-        return True
+        if self.is_active and self.is_superuser:
+            return True
+        return _user_has_module_perms(self, app_label)
+
 
     @property
     def is_staff(self):
